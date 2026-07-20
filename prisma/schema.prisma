@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  image        String?
+  prefs        String?
+  tripsCreated Int        @default(0)
+  unlimited    Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  trips        Trip[]
+  favorites    Favorite[]
+}
+
+model Trip {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  city       String
+  country    String
+  startDate  DateTime?
+  days       Int
+  budget     Int
+  currency   String    @default("EUR")
+  style      String    @default("balanced")
+  status     String    @default("upcoming")
+  itinerary  String?
+  packed     String?
+  flights    String?
+  shareToken String?   @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  messages   Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String
+  name      String
+  place     String
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, kind, name])
+}

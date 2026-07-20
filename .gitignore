@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.env
+prisma/dev.db*
+next-env.d.ts
+*.tsbuildinfo
+
+# Claude Code local config
+.claude/

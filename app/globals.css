@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.155 0.01 265);
+  --foreground: oklch(0.93 0.005 260);
+  --card: oklch(0.19 0.012 265);
+  --card-foreground: oklch(0.93 0.005 260);
+  --popover: oklch(0.2 0.012 265);
+  --popover-foreground: oklch(0.93 0.005 260);
+  --primary: oklch(0.79 0.13 70);
+  --primary-foreground: oklch(0.2 0.03 70);
+  --secondary: oklch(0.24 0.012 265);
+  --secondary-foreground: oklch(0.93 0.005 260);
+  --muted: oklch(0.23 0.012 265);
+  --muted-foreground: oklch(0.66 0.01 260);
+  --accent: oklch(0.25 0.014 265);
+  --accent-foreground: oklch(0.93 0.005 260);
+  --destructive: oklch(0.62 0.19 25);
+  --destructive-foreground: oklch(0.97 0.01 25);
+  --border: oklch(0.29 0.012 265);
+  --input: oklch(0.27 0.012 265);
+  --ring: oklch(0.79 0.13 70 / 55%);
+  --chart-1: oklch(0.79 0.13 70);
+  --chart-2: oklch(0.68 0.08 50);
+  --chart-3: oklch(0.62 0.05 260);
+  --chart-4: oklch(0.55 0.06 150);
+  --chart-5: oklch(0.5 0.02 265);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: oklch(0.79 0.13 70 / 30%);
+}
+
+.glass {
+  background: oklch(0.19 0.012 265 / 72%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid oklch(1 0 0 / 8%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 6%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--card);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.hero-glow {
+  background:
+    radial-gradient(56rem 30rem at 18% -8%, oklch(0.79 0.13 70 / 13%), transparent 60%),
+    radial-gradient(40rem 26rem at 88% 12%, oklch(0.4 0.03 265 / 45%), transparent 65%);
+}
+
+.animate-dash {
+  stroke-dasharray: 6 10;
+  animation: dashmove 3.2s linear infinite;
+}
+
+@keyframes dashmove {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-dash {
+    animation: none;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+  .print-clean,
+  .print-clean * {
+    background: white !important;
+    color: black !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+  }
+}
