@@ -1,8 +1,8 @@
 import { streamObject } from "ai";
-import { google } from "@ai-sdk/google";
 import { auth } from "@/lib/auth";
 import { itinerarySchema } from "@/lib/itinerary";
 import { sampleItinerary } from "@/lib/sample-trip";
+import { getModel, reportModelFailure } from "@/lib/ai-model";
 
 export const maxDuration = 120;
 
@@ -38,10 +38,11 @@ export async function POST(req: Request) {
   }
 
   const result = streamObject({
-    model: google(process.env.GEMINI_MODEL ?? "gemini-flash-latest"),
+    model: await getModel(),
     schema: itinerarySchema,
     system: SYSTEM,
     prompt,
+    onError: () => reportModelFailure(),
   });
   return result.toTextStreamResponse();
 }

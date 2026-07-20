@@ -1,7 +1,7 @@
 import { streamObject } from "ai";
-import { google } from "@ai-sdk/google";
 import { auth } from "@/lib/auth";
 import { chatResponseSchema } from "@/lib/itinerary";
+import { getModel, reportModelFailure } from "@/lib/ai-model";
 
 export const maxDuration = 120;
 
@@ -35,12 +35,13 @@ export async function POST(req: Request) {
   }
 
   const result = streamObject({
-    model: google(process.env.GEMINI_MODEL ?? "gemini-flash-latest"),
+    model: await getModel(),
     schema: chatResponseSchema,
     system: SYSTEM,
     prompt: `Current itinerary:\n${JSON.stringify(itinerary)}\n\nConversation:\n${(messages as { role: string; content: string }[])
       .map((m) => `${m.role}: ${m.content}`)
       .join("\n")}`,
+    onError: () => reportModelFailure(),
   });
   return result.toTextStreamResponse();
 }

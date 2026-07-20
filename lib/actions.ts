@@ -9,7 +9,6 @@ import { prisma } from "./prisma";
 import { auth, signIn, signOut } from "./auth";
 import { itinerarySchema, type Itinerary } from "./itinerary";
 import { flightSchema, mergeFlights, parseFlights, type Flight } from "./flights";
-import { sampleFlights, sampleItinerary, samplePrompt } from "./sample-trip";
 
 const credentialsSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -39,31 +38,9 @@ export async function register(input: { name: string; email: string; password: s
   const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   if (existing) return { error: "An account with this email already exists" };
 
-  const user = await prisma.user.create({
+  await prisma.user.create({
     data: { name, email: email.toLowerCase(), passwordHash: await hash(password, 10) },
   });
-
-  const start = new Date();
-  start.setDate(start.getDate() + 45);
-  await prisma.$transaction([
-    prisma.trip.create({
-      data: {
-        userId: user.id,
-        title: sampleItinerary.title,
-        city: sampleItinerary.city,
-        country: sampleItinerary.country,
-        startDate: start,
-        days: sampleItinerary.days.length,
-        budget: sampleItinerary.totalCost,
-        currency: sampleItinerary.currency,
-        style: "balanced",
-        itinerary: JSON.stringify(sampleItinerary),
-        flights: JSON.stringify(sampleFlights),
-        messages: { create: { role: "user", content: samplePrompt } },
-      },
-    }),
-    prisma.user.update({ where: { id: user.id }, data: { tripsCreated: { increment: 1 } } }),
-  ]);
 
   return login({ email, password });
 }

@@ -126,7 +126,7 @@ built-in sample so everything is clickable out of the box.
 | `DATABASE_URL` | ✅ | PostgreSQL connection string (a free Neon database works great) |
 | `AUTH_SECRET` | ✅ | Session encryption — `openssl rand -base64 32` |
 | `GOOGLE_GENERATIVE_AI_API_KEY` | — | Real AI generation & chat. Free key (no card): <https://aistudio.google.com/app/apikey> |
-| `GEMINI_MODEL` | — | Defaults to `gemini-flash-latest` |
+| `GEMINI_MODEL` | — | Defaults to `gemini-flash-lite-latest` |
 
 Maps (Leaflet + Carto), weather (Open-Meteo), currency (ECB) and routing (OSRM) all
 work with **no keys and no accounts**.
